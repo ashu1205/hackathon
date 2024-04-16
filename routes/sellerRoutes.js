@@ -4,6 +4,7 @@ const auth=require('../middleware/auth')
 
 //import controllers
 // const {createProduct,showProducts,deleteProduct,redirectToUpdate,updateProduct}=require('../controllers/productController')
+const {getProducts}=require('../controllers/products')
 
 const {sendReminder}=require('../controllers/reminder')
 // // ************ Product CRUD routes ***********
@@ -18,5 +19,7 @@ const {sendReminder}=require('../controllers/reminder')
 
 // *********** mail users having items in their cart  *******//
 router.post('/reminder',auth,sendReminder)
+/////////************* */
+router.get('/getProducts',auth,getProducts)
 
 module.exports=router

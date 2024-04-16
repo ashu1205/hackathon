@@ -4,8 +4,8 @@ const jwt=require('jsonwebtoken')
 require('dotenv').config()
 async function signup(req,res){
     try {
-        const {fname,lname,email,password}=req.body;
-        console.log(email);
+        const {fname,lname,email,password,imageUrl}=req.body;
+        // console.log(email);
         const username=fname+" "+lname;
         if(email&&password){
             let existingUser=await User.findOne({email:email})
@@ -26,7 +26,7 @@ async function signup(req,res){
                 })
             }
 
-            const user=await User.create({username,email,password:hashedPassword});
+            const user=await User.create({username,email,password:hashedPassword,imageUrl});
 
             user.password=undefined
 
