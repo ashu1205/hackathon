@@ -43,21 +43,27 @@ const sendReminder = async (req,res) => {
 function sendMail(email) {
     
     try {
-        console.log(process.env.EMAIL);
-        const transporter = nodemailer.createTransport({
+        // console.log(process.env.EMAIL);
+        let transporter = nodemailer.createTransport({
             service: "gmail",
-        auth: {
-            user: process.env.EMAIL,
-            pass: process.env.PASSWORD
-        }
+       
+            auth: {
+                type: 'OAuth2',
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+                clientId: process.env.OAUTH_CLIENTID,
+                clientSecret: process.env.OAUTH_CLIENT_SECRET,
+                refreshToken: process.env.OAUTH_REFRESH_TOKEN
+              }
+        
           
         });
 
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: "Sending Email With React And Nodejs",
-            html: '<h1>Congratulation</h1> <h1> You successfully sent Email </h2>'
+            subject: 'Nodemailer Project',
+            text: 'Hi from your nodemailer project'
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -65,7 +71,7 @@ function sendMail(email) {
                 console.log("Error" + error)
             } else {
                 console.log("Email sent:" + info.response);
-                res.status(201).json({status:201,info})
+                return res.status(201).json({status:201,info})
             }
         })
 
