@@ -19,17 +19,16 @@ const sendReminder = async (req,res) => {
         const userIds = pendingOrders.map(order => order.userId);
         // console.log(pendingOrders);
         // 
-        const users = await User.find({ _id: { $in: userIds } }).populate('email');
+        const users = await User.find({ _id: { $in: userIds } }).select('username email');
 
         // 
-        const emails = users.map(user => user.email);
-
-        sendMail(emails[0])
-        console.log(emails[1]);
-        console.log('Emails:', emails);
+        for (const user of users) {
+           sendMail(user.email , user.username)
+        }
+        console.log('users:', users);
         return res.status(200).json({
             success:true,
-            data:emails
+            data:users
         })
     } catch (error) {
         console.error('Error sending reminder emails:', error.message);
@@ -40,30 +39,25 @@ const sendReminder = async (req,res) => {
     }
 };
 
-function sendMail(email) {
+function sendMail(email ,name) {
     
     try {
-        // console.log(process.env.EMAIL);
-        let transporter = nodemailer.createTransport({
+        console.log(process.env.EMAIL);
+        const transporter = nodemailer.createTransport({
             service: "gmail",
-       
-            auth: {
-                type: 'OAuth2',
-                user: process.env.EMAIL,
-                pass: process.env.PASSWORD,
-                clientId: process.env.OAUTH_CLIENTID,
-                clientSecret: process.env.OAUTH_CLIENT_SECRET,
-                refreshToken: process.env.OAUTH_REFRESH_TOKEN
-              }
-        
+        auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD
+        }
           
         });
 
         const mailOptions = {
             from: process.env.EMAIL,
             to: email,
-            subject: 'Nodemailer Project',
-            text: 'Hi from your nodemailer project'
+            subject: "AMATSHOP - Cart",
+            html: `<h2>Hello </h2><h1>${name}</h1><h2>Your Cart is missing you</h2>`
+
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -71,7 +65,7 @@ function sendMail(email) {
                 console.log("Error" + error)
             } else {
                 console.log("Email sent:" + info.response);
-                return res.status(201).json({status:201,info})
+                res.status(201).json({status:201,info})
             }
         })
 
