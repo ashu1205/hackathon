@@ -6,13 +6,13 @@ const sendReminder = async (req,res) => {
     try {
         // 
         const sellerId=req.token.userId
-        const threeDaysAgo = new Date(Date.now() - 60* 1000);
+        const timegap = new Date(Date.now() - 60* 1000);
 
         // pending orders
         const pendingOrders = await userOrders.find({
             sellerId:sellerId,
             status: 'pending',
-            createdAt: { $lte: threeDaysAgo }
+            createdAt: { $lte: timegap }
         });
 
         // 
@@ -42,7 +42,7 @@ const sendReminder = async (req,res) => {
 function sendMail(email ,name) {
     
     try {
-        console.log(process.env.EMAIL);
+        // console.log(process.env.EMAIL);
         const transporter = nodemailer.createTransport({
             service: "gmail",
         auth: {

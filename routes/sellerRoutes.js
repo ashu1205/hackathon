@@ -6,7 +6,9 @@ const auth=require('../middleware/auth')
 // const {createProduct,showProducts,deleteProduct,redirectToUpdate,updateProduct}=require('../controllers/productController')
 const {getProducts}=require('../controllers/products')
 const {getRevenue}=require('../controllers/revenue')
+const {getTopCustomers}=require('../controllers/topCustomer')
 const {sendReminder}=require('../controllers/reminder')
+
 // // ************ Product CRUD routes ***********
 // router.get('/createProduct',(req,res)=>{
 //     res.render("createProduct.ejs")
@@ -25,5 +27,8 @@ router.get('/getProducts',auth,getProducts)
 
 // ******* get daily , monthly revenue for seller
 router.get('/getRevenue',auth, getRevenue)
+
+//** get top customers */
+router.get('/getTopCustomers',auth,getTopCustomers)
 
 module.exports=router
