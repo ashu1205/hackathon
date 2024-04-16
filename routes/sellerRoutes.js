@@ -6,7 +6,7 @@ const auth=require('../middleware/auth')
 // const {createProduct,showProducts,deleteProduct,redirectToUpdate,updateProduct}=require('../controllers/productController')
 const {getProducts}=require('../controllers/products')
 const {getRevenue}=require('../controllers/revenue')
-const {getTopCustomers}=require('../controllers/topCustomer')
+const {getTopCustomers, getTopProducts}=require('../controllers/topCustomer')
 const {sendReminder}=require('../controllers/reminder')
 
 // // ************ Product CRUD routes ***********
@@ -30,5 +30,8 @@ router.get('/getRevenue',auth, getRevenue)
 
 //** get top customers */
 router.get('/getTopCustomers',auth,getTopCustomers)
+
+//** get top products */
+router.get('/getTopProducts',auth,getTopProducts)
 
 module.exports=router
