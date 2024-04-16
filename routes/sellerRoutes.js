@@ -5,7 +5,7 @@ const auth=require('../middleware/auth')
 //import controllers
 // const {createProduct,showProducts,deleteProduct,redirectToUpdate,updateProduct}=require('../controllers/productController')
 const {getProducts}=require('../controllers/products')
-
+const {getRevenue}=require('../controllers/revenue')
 const {sendReminder}=require('../controllers/reminder')
 // // ************ Product CRUD routes ***********
 // router.get('/createProduct',(req,res)=>{
@@ -19,7 +19,11 @@ const {sendReminder}=require('../controllers/reminder')
 
 // *********** mail users having items in their cart  *******//
 router.post('/reminder',auth,sendReminder)
-/////////************* */
+
+// ******* get products of seller
 router.get('/getProducts',auth,getProducts)
+
+// ******* get daily , monthly revenue for seller
+router.get('/getRevenue',auth, getRevenue)
 
 module.exports=router
